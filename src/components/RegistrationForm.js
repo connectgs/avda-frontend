@@ -321,7 +321,6 @@ const RegistrationForm = () => {
     try {
       const payload = {
         ...formData,
-        user_id: 'user_' + Date.now(),
         mobile_number: formData.country_code + ' ' + formData.mobile_number,
         country: formData.country === 'Other' ? formData.country_other : formData.country,
         years_of_experience: formData.years_of_experience ? parseInt(formData.years_of_experience) : null,
