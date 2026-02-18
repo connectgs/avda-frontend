@@ -1,44 +1,43 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import MembershipTierSelector from './MembershipTierSelector';
+import React, { useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import MembershipTierSelector from "./MembershipTierSelector";
 
-// Correct backend connection
 const BACKEND_URL = process.env.REACT_APP_API_URL;
 const API = `${BACKEND_URL}/api`;
 
 const countryCodes = [
-  { code: '+91', country: 'India', flag: '🇮🇳' },
-  { code: '+1', country: 'USA', flag: '🇺🇸' },
-  { code: '+44', country: 'UK', flag: '🇬🇧' },
-  { code: '+61', country: 'Australia', flag: '🇦🇺' },
-  { code: '+971', country: 'UAE', flag: '🇦🇪' },
+  { code: "+91", country: "India" },
+  { code: "+1", country: "USA" },
+  { code: "+44", country: "UK" },
+  { code: "+61", country: "Australia" },
+  { code: "+971", country: "UAE" },
 ];
 
 const indianStates = [
-  'Andhra Pradesh',
-  'Telangana',
-  'Karnataka',
-  'Tamil Nadu',
-  'Kerala',
-  'Maharashtra',
+  "Andhra Pradesh",
+  "Telangana",
+  "Karnataka",
+  "Tamil Nadu",
+  "Kerala",
+  "Maharashtra",
 ];
 
 const countries = [
-  'India',
-  'USA',
-  'UK',
-  'Australia',
-  'Other',
+  "India",
+  "USA",
+  "UK",
+  "Australia",
+  "Other",
 ];
 
 const registeredCouncils = [
-  'Andhra Pradesh',
-  'Telangana',
-  'Karnataka',
-  'Tamil Nadu',
-  'Delhi',
-  'Overseas',
+  "Andhra Pradesh",
+  "Telangana",
+  "Karnataka",
+  "Tamil Nadu",
+  "Delhi",
+  "Overseas",
 ];
 
 const RegistrationForm = () => {
@@ -59,69 +58,69 @@ const RegistrationForm = () => {
 
   const [formData, setFormData] = useState({
 
-    title: 'Dr',
+    title: "Dr",
 
-    first_name: googleUser?.name?.split(' ')[0] || '',
+    first_name: googleUser?.name?.split(" ")[0] || "",
 
-    surname: googleUser?.name?.split(' ').slice(1).join(' ') || '',
+    surname: googleUser?.name?.split(" ").slice(1).join(" ") || "",
 
-    gender: 'Male',
+    gender: "Male",
 
-    date_of_birth: '',
+    date_of_birth: "",
 
-    photo_url: googleUser?.picture || '',
+    photo_url: googleUser?.picture || "",
 
     photo_file: null,
 
     is_arya_vysya: null,
 
-    gotram: '',
+    gotram: "",
 
     wants_to_be_moderator: false,
 
-    medical_stream: 'MBBS',
+    medical_stream: "MBBS",
 
-    current_position: '',
+    current_position: "",
 
     degrees_completed: [],
 
-    council_registration_number: '',
+    council_registration_number: "",
 
-    registered_council: '',
+    registered_council: "",
 
     certificate_files: [],
 
-    email: googleUser?.email || '',
+    email: googleUser?.email || "",
 
-    country_code: '+91',
+    country_code: "+91",
 
-    mobile_number: '',
+    mobile_number: "",
 
-    other_phone_numbers: '',
+    other_phone_numbers: "",
 
-    state: '',
+    state: "",
 
-    city: '',
+    city: "",
 
-    pincode: '',
+    pincode: "",
 
-    country: 'India',
+    country: "India",
 
-    country_other: '',
+    country_other: "",
 
-    home_address: '',
+    home_address: "",
 
-    office_clinic_hospital_address: '',
+    office_clinic_hospital_address: "",
 
-    areas_of_interest: '',
+    areas_of_interest: "",
 
-    specialty: '',
+    specialty: "",
 
-    sub_specialty: '',
+    sub_specialty: "",
 
-    years_of_experience: '',
+    years_of_experience: "",
 
-    practice_clinic_name: '',
+    practice_clinic_name: "",
 
     display_phone_publicly: true,
 
@@ -131,7 +130,7 @@ const RegistrationForm = () => {
 
     terms_accepted: false,
 
-    membership_tier: 'Basic',
+    membership_tier: "Basic",
   });
 
   const handleInputChange = (e) => {
@@ -140,7 +139,7 @@ const RegistrationForm = () => {
 
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value
     }));
 
   };
@@ -151,28 +150,28 @@ const RegistrationForm = () => {
 
     if (step === 1) {
 
-      if (!formData.first_name) newErrors.first_name = 'Required';
+      if (!formData.first_name) newErrors.first_name = "Required";
 
-      if (!formData.surname) newErrors.surname = 'Required';
+      if (!formData.surname) newErrors.surname = "Required";
 
-      if (!formData.date_of_birth) newErrors.date_of_birth = 'Required';
+      if (!formData.date_of_birth) newErrors.date_of_birth = "Required";
 
-      if (!formData.gotram) newErrors.gotram = 'Required';
+      if (!formData.gotram) newErrors.gotram = "Required";
 
     }
 
     if (step === 3) {
 
-      if (!formData.mobile_number) newErrors.mobile_number = 'Required';
+      if (!formData.mobile_number) newErrors.mobile_number = "Required";
 
-      if (!formData.city) newErrors.city = 'Required';
+      if (!formData.city) newErrors.city = "Required";
 
     }
 
     if (step === 6) {
 
       if (!formData.terms_accepted)
-        newErrors.terms_accepted = 'Accept terms';
+        newErrors.terms_accepted = "Accept terms";
 
     }
 
@@ -208,10 +207,10 @@ const RegistrationForm = () => {
         ...formData,
 
         mobile_number:
-          formData.country_code + ' ' + formData.mobile_number,
+          formData.country_code + " " + formData.mobile_number,
 
         country:
-          formData.country === 'Other'
+          formData.country === "Other"
             ? formData.country_other
             : formData.country,
 
@@ -240,10 +239,10 @@ const RegistrationForm = () => {
       );
 
       alert(
-        'Registration successful. Await admin approval.'
+        "Registration successful. Await admin approval."
       );
 
-      navigate('/');
+      navigate("/");
 
     }
     catch (error) {
@@ -264,40 +263,128 @@ const RegistrationForm = () => {
 
   return (
 
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto text-white">
 
-      <h2 className="text-2xl text-white mb-4">
-
-        Registration
-
+      <h2 className="text-3xl font-bold mb-6">
+        AVDA Doctor Registration
       </h2>
 
-      <input
-        name="first_name"
-        value={formData.first_name}
-        onChange={handleInputChange}
-        placeholder="First name"
-      />
+      {currentStep === 1 && (
+        <>
+          <input
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleInputChange}
+            placeholder="First name"
+            className="block w-full mb-3 text-black p-2"
+          />
 
-      <input
-        name="surname"
-        value={formData.surname}
-        onChange={handleInputChange}
-        placeholder="Surname"
-      />
+          <input
+            name="surname"
+            value={formData.surname}
+            onChange={handleInputChange}
+            placeholder="Surname"
+            className="block w-full mb-3 text-black p-2"
+          />
 
-      <input
-        name="mobile_number"
-        value={formData.mobile_number}
-        onChange={handleInputChange}
-        placeholder="Mobile"
-      />
+          <input
+            name="gotram"
+            value={formData.gotram}
+            onChange={handleInputChange}
+            placeholder="Gotram"
+            className="block w-full mb-3 text-black p-2"
+          />
 
-      <button onClick={handleSubmit} disabled={loading}>
+          <button onClick={nextStep}>
+            Next →
+          </button>
+        </>
+      )}
 
-        {loading ? 'Submitting...' : 'Submit'}
+      {currentStep === 2 && (
+        <>
+          <input
+            name="current_position"
+            value={formData.current_position}
+            onChange={handleInputChange}
+            placeholder="Current Position"
+            className="block w-full mb-3 text-black p-2"
+          />
 
-      </button>
+          <button onClick={prevStep}>
+            ← Back
+          </button>
+
+          <button onClick={nextStep}>
+            Next →
+          </button>
+        </>
+      )}
+
+      {currentStep === 3 && (
+        <>
+          <input
+            name="mobile_number"
+            value={formData.mobile_number}
+            onChange={handleInputChange}
+            placeholder="Mobile"
+            className="block w-full mb-3 text-black p-2"
+          />
+
+          <input
+            name="city"
+            value={formData.city}
+            onChange={handleInputChange}
+            placeholder="City"
+            className="block w-full mb-3 text-black p-2"
+          />
+
+          <button onClick={prevStep}>
+            ← Back
+          </button>
+
+          <button onClick={nextStep}>
+            Next →
+          </button>
+        </>
+      )}
+
+      {currentStep === 6 && (
+        <>
+          <MembershipTierSelector
+            selectedTier={formData.membership_tier}
+            onTierSelect={(tier) =>
+              setFormData(prev => ({
+                ...prev,
+                membership_tier: tier
+              }))
+            }
+          />
+
+          <label>
+            <input
+              type="checkbox"
+              name="terms_accepted"
+              checked={formData.terms_accepted}
+              onChange={handleInputChange}
+            />
+            Accept Terms
+          </label>
+
+          <button onClick={prevStep}>
+            ← Back
+          </button>
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading
+              ? "Submitting..."
+              : "Submit Registration"}
+          </button>
+        </>
+      )}
 
     </div>
 
